@@ -7,19 +7,19 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const noteRoutes = require('./routes/note');
 
-// Cargar las variables de entorno
+
 require('dotenv').config(); 
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const port = process.env.PORT || 3000; // Usar el puerto de la variable de entorno, si no está disponible, usar 3000.
+const port = process.env.PORT || 3000; 
 
 const dbconnect = async () => {
   try {
     mongoose.set('strictQuery', true); 
-    await mongoose.connect(process.env.MONGO_URI); // Usar la URI de MongoDB desde las variables de entorno
+    await mongoose.connect(process.env.MONGO_URI); 
     console.log('Conexión correcta a la base de datos');
   } catch (error) {
     console.error('Error de conexión a la base de datos:', error);
