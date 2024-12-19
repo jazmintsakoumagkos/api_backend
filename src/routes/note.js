@@ -13,7 +13,7 @@ router.post('/save', Note.save);
 
 //obtener notas
 
-router.get('/notes', Note.getNotes);
+router.get('/notes/:id', Note.getNoteById);
 
 //eliminar
 router.delete ('/delete/:id', Note.delete);

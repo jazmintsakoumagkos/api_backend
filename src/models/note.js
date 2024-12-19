@@ -7,7 +7,8 @@ var NoteSchema = new Schema ({
 
     title: String,
     date: {type: Date, default: Date.now},
-    description: String
+    description: String,
+
 })
 
 module.exports = mongoose.model ("Note", NoteSchema);
