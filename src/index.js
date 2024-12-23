@@ -4,30 +4,46 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const mongoose = require('mongoose');
+const { MongoClient, ServerApiVersion } = require('mongodb');  
+require('dotenv').config();  
+
 const noteRoutes = require('./routes/note');
 
-
-require('dotenv').config(); 
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const port = process.env.PORT || 3000; 
+const port = process.env.PORT || 3000;
 
-const dbconnect = async () => {
-  try {
-    mongoose.set('strictQuery', true); 
-    await mongoose.connect(process.env.MONGO_URI); 
-    console.log('Conexión correcta a la base de datos');
-  } catch (error) {
-    console.error('Error de conexión a la base de datos:', error);
-    process.exit(1); 
+
+const uri = process.env.MONGO_URI; 
+
+
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
   }
-};
+});
 
-dbconnect();
+
+async function connectToDatabase() {
+  try {
+
+    await client.connect();
+
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } catch (error) {
+    console.error("Error de conexión a la base de datos:", error);
+  }
+}
+
+
+connectToDatabase();
+
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -41,6 +57,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api', noteRoutes);
+
 
 app.listen(port, () => {
   console.log(`Servidor ejecutándose en el puerto ${port}`);

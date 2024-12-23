@@ -7,18 +7,18 @@ const note = require('../models/note');
 
 var router = express.Router();
 
-//guardar nota
+
 
 router.post('/save', Note.save);
 
-//obtener notas
+
 
 router.get('/notes/:id', Note.getNoteById);
 
-//eliminar
+
 router.delete ('/delete/:id', Note.delete);
 
-//actualizar nota
+
 
 router.put ('/update/:id', Note.update);
 
